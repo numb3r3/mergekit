@@ -1,6 +1,6 @@
 {
   "model_type": "qwen2",
-  "architectures": ["RerankerModel"],
+  "architectures": ["JinaVLForRanking"],
   "pre_weights": [
     {
       "name": "visual.patch_embed.proj.weight",
@@ -21,7 +21,34 @@
       "aliases": ["model.embed_tokens.weight"]
     },
     {
-      "name": "score.weight"
+      "name": "visual.merger.ln_q.weight"
+    },
+    {
+      "name": "visual.merger.ln_q.bias"
+    },
+    {
+      "name": "visual.merger.mlp.0.weight"
+    },
+    {
+      "name": "visual.merger.mlp.0.bias"
+    },
+    {
+      "name": "visual.merger.mlp.2.weight"
+    },
+    {
+      "name": "visual.merger.mlp.2.bias"
+    },
+    {
+      "name": "score.0.weight"
+    },
+    {
+      "name": "score.0.bias"
+    },
+    {
+      "name": "score.2.weight"
+    },
+    {
+      "name": "score.2.bias"
     }
   ],
   "num_layers_config_key": "num_hidden_layers",
