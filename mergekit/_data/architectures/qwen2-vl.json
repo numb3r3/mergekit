@@ -19,6 +19,24 @@
       "name": "lm_head.weight",
       "is_embed": true,
       "aliases": ["model.embed_tokens.weight"]
+    },
+    {
+      "name": "visual.merger.ln_q.weight"
+    },
+    {
+      "name": "visual.merger.ln_q.bias"
+    },
+    {
+      "name": "visual.merger.mlp.0.weight"
+    },
+    {
+      "name": "visual.merger.mlp.0.bias"
+    },
+    {
+      "name": "visual.merger.mlp.2.weight"
+    },
+    {
+      "name": "visual.merger.mlp.2.bias"
     }
   ],
   "num_layers_config_key": "num_hidden_layers",
