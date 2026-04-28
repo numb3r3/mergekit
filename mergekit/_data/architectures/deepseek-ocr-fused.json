@@ -1,0 +1,285 @@
+{
+    "kind": "modular",
+    "model_type": "deepseek_vl_v2",
+    "architectures": [
+        "DeepseekOCRForCausalLM"
+    ],
+    "vocab_size_config_key": "vocab_size",
+    "tagalong_files": [
+        "processor_config.json",
+        "vocab.json"
+    ],
+    "modules": {
+        "text_decoder": {
+            "architecture": {
+                "architectures": [
+                    "DeepseekV2ForCausalLM"
+                ],
+                "model_type": "deepseek_vl_v2",
+                "num_layers_config_key": "language_config.num_hidden_layers",
+                "pre_weights": [
+                    {
+                        "name": "model.embed_tokens.weight",
+                        "is_embed": true
+                    },
+                    {
+                        "name": "model.image_newline"
+                    },
+                    {
+                        "name": "model.view_seperator"
+                    }
+                ],
+                "post_weights": [
+                    {
+                        "name": "model.norm.weight"
+                    },
+                    {
+                        "name": "lm_head.weight",
+                        "is_embed": true,
+                        "optional": true,
+                        "tied_names": [
+                            "model.embed_tokens.weight"
+                        ]
+                    }
+                ],
+                "layer_templates": {
+                    "weights": [
+                        {
+                            "name": "model.layers.${layer_index}.input_layernorm.weight"
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.mlp.shared_experts.down_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.mlp.shared_experts.gate_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.mlp.shared_experts.up_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.mlp.experts.down_proj",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.mlp.experts.gate_up_proj",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.mlp.gate.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.mlp.down_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.mlp.gate_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.mlp.up_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.post_attention_layernorm.weight"
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.self_attn.k_proj.weight"
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.self_attn.q_proj.weight"
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.self_attn.v_proj.weight"
+                        },
+                        {
+                            "name": "model.layers.${layer_index}.self_attn.o_proj.weight"
+                        }
+                    ]
+                }
+            }
+        },
+        "multi_modal_projector": {
+            "model_type": "",
+            "architecture": {
+                "model_type": "",
+                "architectures": [],
+                "override_num_layers": 1,
+                "pre_weights": [
+                ],
+                "post_weights": [],
+                "layer_templates": {
+                    "weights": [
+                      {
+                          "name": "model.projector.layers.bias"
+                      },
+                      {
+                          "name": "model.projector.layers.weight"
+                      }
+                    ]
+                }
+            }
+        },
+        "sam_model":
+        {
+            "architecture": {
+                "model_type": "",
+                "architectures": [],
+                "num_layers_config_key": "vision_config.width.sam_vit_b.layers",
+                "pre_weights": [
+                    {
+                        "name": "model.sam_model.pos_embed",
+                        "is_embed": true
+                    },
+                    {
+                        "name": "model.view_seperator"
+                    }
+                ],
+                "post_weights": [
+                  {
+                      "name": "model.sam_model.patch_embed.proj.bias"
+                  },
+                  {
+                      "name": "model.sam_model.patch_embed.proj.weight"
+                  },
+                  {
+                      "name": "model.sam_model.neck.0.weight"
+                  },
+                  {
+                      "name": "model.sam_model.neck.1.bias"
+                  },
+                  {
+                      "name": "model.sam_model.neck.1.weight"
+                  },
+                  {
+                      "name": "model.sam_model.neck.2.weight"
+                  },
+                  {
+                      "name": "model.sam_model.neck.3.bias"
+                  },
+                  {
+                      "name": "model.sam_model.neck.3.weight"
+                  },
+                  {
+                      "name": "model.sam_model.net_2.weight"
+                  },
+                  {
+                      "name": "model.sam_model.net_3.weight"
+                  }
+                ],
+                "layer_templates": {
+                    "weights": [
+                        {
+                            "name": "model.sam_model.blocks.${layer_index}.attn.proj.bias"
+                        },
+                        {
+                            "name": "model.sam_model.blocks.${layer_index}.attn.proj.weight"
+                        },
+                        {
+                            "name": "model.sam_model.blocks.${layer_index}.attn.rel_pos_h"
+                        },
+                        {
+                            "name": "model.sam_model.blocks.${layer_index}.attn.rel_pos_w"
+                        },
+                        {
+                            "name": "model.sam_model.blocks.${layer_index}.mlp.lin1.bias"
+                        },
+                        {
+                            "name": "model.sam_model.blocks.${layer_index}.mlp.lin1.weight"
+                        },
+                        {
+                            "name": "model.sam_model.blocks.${layer_index}.mlp.lin2.bias"
+                        },
+                        {
+                            "name": "model.sam_model.blocks.${layer_index}.mlp.lin2.weight"
+                        },
+                        {
+                            "name": "model.sam_model.blocks.${layer_index}.norm1.bias"
+                        },
+                        {
+                            "name": "model.sam_model.blocks.${layer_index}.norm1.weight"
+                        },
+                        {
+                            "name": "model.sam_model.blocks.${layer_index}.norm2.bias"
+                        },
+                        {
+                            "name": "model.sam_model.blocks.${layer_index}.norm2.weight"
+                        }
+                    ]
+                }
+            }
+        },
+        "vision_model": {
+            "architecture": {
+                "model_type": "",
+                "architectures": [],
+                "num_layers_config_key": "vision_config.width.clip-l-14-224.layers",
+                "pre_weights": [
+                    {
+                        "name": "model.vision_model.embeddings.class_embedding",
+                        "is_embed": true
+                    },
+                    {
+                        "name": "model.vision_model.embeddings.patch_embedding.weight",
+                        "is_embed": true
+                    },
+                    {
+                        "name": "model.vision_model.embeddings.position_embedding.weight",
+                        "is_embed": true
+                    },
+                    {
+                        "name": "model.vision_model.pre_layrnorm.bias"
+                    },
+                    {
+                        "name": "model.vision_model.pre_layrnorm.weight"
+                    }
+                ],
+                "post_weights": [
+                ],
+                "layer_templates": {
+                    "weights": [
+                        {
+                            "name": "model.vision_model.transformer.layers.${layer_index}.layer_norm1.bias"
+                        },
+                        {
+                            "name": "model.vision_model.transformer.layers.${layer_index}.layer_norm1.weight"
+                        },
+                        {
+                            "name": "model.vision_model.transformer.layers.${layer_index}.layer_norm2.bias"
+                        },
+                        {
+                            "name": "model.vision_model.transformer.layers.${layer_index}.layer_norm2.weight"
+                        },
+                        {
+                            "name": "model.vision_model.transformer.layers.${layer_index}.mlp.fc1.bias"
+                        },
+                        {
+                            "name": "model.vision_model.transformer.layers.${layer_index}.mlp.fc1.weight"
+                        },
+                        {
+                            "name": "model.vision_model.transformer.layers.${layer_index}.mlp.fc2.bias"
+                        },
+                        {
+                            "name": "model.vision_model.transformer.layers.${layer_index}.mlp.fc2.weight"
+                        },
+                        {
+                            "name": "model.vision_model.transformer.layers.${layer_index}.self_attn.out_proj.bias"
+                        },
+                        {
+                            "name": "model.vision_model.transformer.layers.${layer_index}.self_attn.out_proj.weight"
+                        },
+                        {
+                            "name": "model.vision_model.transformer.layers.${layer_index}.self_attn.qkv_proj.bias"
+                        },
+                        {
+                            "name": "model.vision_model.transformer.layers.${layer_index}.self_attn.qkv_proj.weight"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
