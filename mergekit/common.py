@@ -50,11 +50,18 @@ def get_config_value(config: PretrainedConfig, key: str) -> Any:
     parts = key.split(".")
     obj = config
     for idx, part in enumerate(parts):
-        if not hasattr(obj, part):
-            raise RuntimeError(
-                f"Config {config} has no attribute {'.'.join(parts[: idx + 1])}"
-            )
-        obj = getattr(obj, part)
+        if isinstance(obj, dict):
+            if part not in obj:
+                raise RuntimeError(
+                    f"Config {config} has no attribute {'.'.join(parts[: idx + 1])}"
+                )
+            obj = obj[part]
+        else:
+            if not hasattr(obj, part):
+                raise RuntimeError(
+                    f"Config {config} has no attribute {'.'.join(parts[: idx + 1])}"
+                )
+            obj = getattr(obj, part)
     return obj
 
 
