@@ -85,6 +85,9 @@
                 "layer_templates": {
                     "weights": [
                         {
+                            "name": "fusion_head.stack.${layer_index}.input_layernorm.weight"
+                        },
+                        {
                             "name": "fusion_head.stack.${layer_index}.mlp.down_proj.weight"
                         },
                         {
