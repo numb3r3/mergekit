@@ -185,6 +185,12 @@
                             "name": "model.sam_model.blocks.${layer_index}.attn.rel_pos_w"
                         },
                         {
+                            "name": "model.sam_model.blocks.${layer_index}.attn.qkv.bias"
+                        },
+                        {
+                            "name": "model.sam_model.blocks.${layer_index}.attn.qkv.weight"
+                        },
+                        {
                             "name": "model.sam_model.blocks.${layer_index}.mlp.lin1.bias"
                         },
                         {
