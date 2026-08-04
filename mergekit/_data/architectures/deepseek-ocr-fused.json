@@ -16,7 +16,7 @@
                     "DeepseekV2ForCausalLM"
                 ],
                 "model_type": "deepseek_vl_v2",
-                "num_layers_config_key": "language_config.num_hidden_layers",
+                "num_layers_config_key": "num_hidden_layers",
                 "pre_weights": [
                     {
                         "name": "model.embed_tokens.weight",
@@ -128,14 +128,11 @@
             "architecture": {
                 "model_type": "",
                 "architectures": [],
-                "num_layers_config_key": "vision_config.width.sam_vit_b.layers",
+                "override_num_layers": 12,
                 "pre_weights": [
                     {
                         "name": "model.sam_model.pos_embed",
                         "is_embed": true
-                    },
-                    {
-                        "name": "model.view_seperator"
                     }
                 ],
                 "post_weights": [
@@ -222,7 +219,7 @@
             "architecture": {
                 "model_type": "",
                 "architectures": [],
-                "num_layers_config_key": "vision_config.width.clip-l-14-224.layers",
+                "override_num_layers": 24,
                 "pre_weights": [
                     {
                         "name": "model.vision_model.embeddings.class_embedding",
