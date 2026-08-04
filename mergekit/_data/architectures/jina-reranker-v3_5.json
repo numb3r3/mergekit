@@ -1,6 +1,6 @@
 {
     "kind": "modular",
-    "architectures": ["Qwen3ForCausalLM", "JinaV3_5ForRanking"],
+    "architectures": ["JinaV3_5ForRanking"],
     "model_type": "qwen3",
     "modules": {
         "decoder": {
