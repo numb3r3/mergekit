@@ -34,6 +34,9 @@ class WeightInfo(BaseModel, frozen=True, extra="forbid"):
     aliases: Optional[Tuple[str, ...]] = None
     force_dtype: Optional[str] = None
     tied_names: Optional[Tuple[str, ...]] = None
+    # Legacy marker from the pre-modular WeightInfo schema, still present in older
+    # architecture JSONs. Kept so those files load; the planner does not read it.
+    is_embed: Optional[bool] = None
 
 
 def _prefix_weight(weight: WeightInfo, prefix: Optional[str] = None) -> WeightInfo:
