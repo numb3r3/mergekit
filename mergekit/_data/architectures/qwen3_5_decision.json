@@ -1,0 +1,282 @@
+{
+    "kind": "modular",
+    "model_type": "qwen3_5",
+    "architectures": [
+        "Qwen3_5ForDecision"
+    ],
+    "vocab_size_config_key": "text_config.vocab_size",
+    "tagalong_files": [
+        "preprocessor_config.json",
+        "processor_config.json",
+        "video_preprocessor_config.json",
+        "vocab.json"
+    ],
+    "modules": {
+        "text_decoder": {
+            "architecture": {
+                "architectures": [
+                    "Qwen3_5ForCausalLM"
+                ],
+                "model_type": "qwen3_5_text",
+                "num_layers_config_key": "text_config.num_hidden_layers",
+                "pre_weights": [
+                    {
+                        "name": "model.language_model.embed_tokens.weight",
+                        "vocabulary_axis": 0
+                    },
+                    {
+                        "name": "model.language_model.embed_tokens.fusion_embedding.weight"
+                    }
+                ],
+                "post_weights": [
+                    {
+                        "name": "model.language_model.norm.weight"
+                    },
+                    {
+                        "name": "lm_head.weight",
+                        "vocabulary_axis": 0,
+                        "optional": true,
+                        "tied_names": [
+                            "model.language_model.embed_tokens.weight"
+                        ]
+                    },
+                    {
+                        "name": "marker_head.weight"
+                    }
+                ],
+                "layer_templates": {
+                    "weights": [
+                        {
+                            "name": "model.language_model.layers.${layer_index}.input_layernorm.weight"
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.post_attention_layernorm.weight"
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.mlp.down_proj.weight"
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.mlp.gate_proj.weight"
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.mlp.up_proj.weight"
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.self_attn.q_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.self_attn.k_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.self_attn.v_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.self_attn.o_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.self_attn.q_norm.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.self_attn.k_norm.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.linear_attn.in_proj_qkv.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.linear_attn.in_proj_z.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.linear_attn.in_proj_a.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.linear_attn.in_proj_b.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.linear_attn.conv1d.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.linear_attn.out_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.linear_attn.norm.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.linear_attn.A_log",
+                            "optional": true
+                        },
+                        {
+                            "name": "model.language_model.layers.${layer_index}.linear_attn.dt_bias",
+                            "optional": true
+                        }
+                    ]
+                }
+            }
+        },
+        "vision_tower": {
+            "architecture": {
+                "model_type": "qwen3_5",
+                "architectures": [],
+                "num_layers_config_key": "vision_config.depth",
+                "pre_weights": [
+                    {
+                        "name": "model.visual.patch_embed.proj.weight"
+                    },
+                    {
+                        "name": "model.visual.patch_embed.proj.bias"
+                    },
+                    {
+                        "name": "model.visual.pos_embed.weight"
+                    }
+                ],
+                "post_weights": [
+                    {
+                        "name": "model.visual.merger.norm.weight"
+                    },
+                    {
+                        "name": "model.visual.merger.norm.bias"
+                    },
+                    {
+                        "name": "model.visual.merger.linear_fc1.weight"
+                    },
+                    {
+                        "name": "model.visual.merger.linear_fc1.bias"
+                    },
+                    {
+                        "name": "model.visual.merger.linear_fc2.weight"
+                    },
+                    {
+                        "name": "model.visual.merger.linear_fc2.bias"
+                    }
+                ],
+                "layer_templates": {
+                    "weights": [
+                        {
+                            "name": "model.visual.blocks.${layer_index}.norm1.weight"
+                        },
+                        {
+                            "name": "model.visual.blocks.${layer_index}.norm1.bias"
+                        },
+                        {
+                            "name": "model.visual.blocks.${layer_index}.norm2.weight"
+                        },
+                        {
+                            "name": "model.visual.blocks.${layer_index}.norm2.bias"
+                        },
+                        {
+                            "name": "model.visual.blocks.${layer_index}.attn.qkv.weight"
+                        },
+                        {
+                            "name": "model.visual.blocks.${layer_index}.attn.qkv.bias"
+                        },
+                        {
+                            "name": "model.visual.blocks.${layer_index}.attn.proj.weight"
+                        },
+                        {
+                            "name": "model.visual.blocks.${layer_index}.attn.proj.bias"
+                        },
+                        {
+                            "name": "model.visual.blocks.${layer_index}.mlp.linear_fc1.weight"
+                        },
+                        {
+                            "name": "model.visual.blocks.${layer_index}.mlp.linear_fc1.bias"
+                        },
+                        {
+                            "name": "model.visual.blocks.${layer_index}.mlp.linear_fc2.weight"
+                        },
+                        {
+                            "name": "model.visual.blocks.${layer_index}.mlp.linear_fc2.bias"
+                        }
+                    ]
+                }
+            }
+        },
+        "mtp": {
+            "architecture": {
+                "model_type": "qwen3_5_text",
+                "architectures": [],
+                "num_layers_config_key": "text_config.mtp_num_hidden_layers",
+                "pre_weights": [
+                    {
+                        "name": "mtp.fc.weight",
+                        "optional": true
+                    },
+                    {
+                        "name": "mtp.pre_fc_norm_embedding.weight",
+                        "optional": true
+                    },
+                    {
+                        "name": "mtp.pre_fc_norm_hidden.weight",
+                        "optional": true
+                    }
+                ],
+                "post_weights": [
+                    {
+                        "name": "mtp.norm.weight",
+                        "optional": true
+                    }
+                ],
+                "layer_templates": {
+                    "weights": [
+                        {
+                            "name": "mtp.layers.${layer_index}.input_layernorm.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "mtp.layers.${layer_index}.post_attention_layernorm.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "mtp.layers.${layer_index}.mlp.down_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "mtp.layers.${layer_index}.mlp.gate_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "mtp.layers.${layer_index}.mlp.up_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "mtp.layers.${layer_index}.self_attn.q_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "mtp.layers.${layer_index}.self_attn.k_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "mtp.layers.${layer_index}.self_attn.v_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "mtp.layers.${layer_index}.self_attn.o_proj.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "mtp.layers.${layer_index}.self_attn.q_norm.weight",
+                            "optional": true
+                        },
+                        {
+                            "name": "mtp.layers.${layer_index}.self_attn.k_norm.weight",
+                            "optional": true
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

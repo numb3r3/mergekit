@@ -197,6 +197,36 @@ def test_mixtral_architecture_uses_json_v5_layout():
     assert "model.layers.0.block_sparse_moe.experts.0.w1.weight" not in names
 
 
+def test_qwen3_5_decision_architecture_lists_marker_table():
+    text = transformers.PretrainedConfig(
+        num_hidden_layers=4,
+        mtp_num_hidden_layers=1,
+        vocab_size=32,
+    )
+    vision = transformers.PretrainedConfig(depth=2)
+    cfg = transformers.PretrainedConfig(text_config=text, vision_config=vision)
+    cfg.model_type = "qwen3_5"
+    cfg.architectures = ["Qwen3_5ForDecision"]
+
+    arch = arch_info_for_config(cfg)
+    weights = {w.name: w for w in arch.all_weights(cfg)}
+
+    embed = weights["model.language_model.embed_tokens.weight"]
+    fusion = weights["model.language_model.embed_tokens.fusion_embedding.weight"]
+    marker = weights["marker_head.weight"]
+    assert embed.vocabulary_axis == 0
+    assert fusion.vocabulary_axis is None and not fusion.optional
+    assert marker.vocabulary_axis is None and not marker.optional
+    assert weights["lm_head.weight"].optional
+    assert weights["model.language_model.layers.0.self_attn.q_proj.weight"].optional
+    assert weights["model.language_model.layers.0.linear_attn.in_proj_qkv.weight"].optional
+    assert weights["model.language_model.layers.3.linear_attn.A_log"].optional
+    assert "model.visual.blocks.1.attn.qkv.weight" in weights
+    assert "model.visual.merger.linear_fc2.bias" in weights
+    assert weights["mtp.fc.weight"].optional
+    assert weights["mtp.layers.0.self_attn.o_proj.weight"].optional
+
+
 def test_qwen3_moe_architecture_uses_json_v5_layout():
     cfg = transformers.Qwen3MoeConfig(
         vocab_size=32,
